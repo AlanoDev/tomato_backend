@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "tomato"
+version = "0.1.0"
+description = ""
+authors=["John Smith","<john@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+mysqlclient = "^2.2.4"
+dynaconf = "^3.2.4"
+pydantic = "^2.6.4"
+peewee = "^3.17.1"
+fastapi = "^0.110.0"
+uvicorn = "^0.29.0"
+python-multipart = "^0.0.9"
+
+[tool.poetry.scripts]
+tomato = "tomato.cmdline:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
