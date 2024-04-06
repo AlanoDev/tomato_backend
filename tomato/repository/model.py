@@ -13,13 +13,13 @@ class ArticleModel(BaseModel):
     tittle=CharField(unique=True)
     content=TextField()
     image=CharField(max_length=3000)
-    user=IntegerField()
+    disease=IntegerField()
     class Meta:
         table_name="article"
 
 class DiseaseModel(BaseModel):
     tittle=CharField(unique=True)
-    introduction=TextField()
+    description=TextField()
     prevention=TextField()
     healing=TextField()
     class Meta:
@@ -27,13 +27,16 @@ class DiseaseModel(BaseModel):
 
 class HistoryModel(BaseModel):
     user=IntegerField()
-    time=IntegerField()
-    image=CharField(max_length=3000)
-    disease=IntegerField()
+    article_id=IntegerField()
     class Meta:
         table_name="history"
-    
+
+class FavoriteModel(BaseModel):
+    user=IntegerField()
+    article_id=IntegerField()
+    class Meta:
+        table_name="favorite" 
 
 
 def database_migrate():
-    init_database().create_tables([UserModel,ArticleModel,HistoryModel,DiseaseModel,])
+    init_database().create_tables([UserModel,ArticleModel,HistoryModel,DiseaseModel,FavoriteModel])
