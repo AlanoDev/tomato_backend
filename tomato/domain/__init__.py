@@ -16,12 +16,11 @@ class Article(BaseModel):
     tittle: str | None = None
     content: str | None = None
     image: str | None = None
-    user: int = 0
-
+    disease: int = 0
 
 class Disease(BaseModel):
     title: str | None = None
-    introduction: str | None = None
+    description: str | None = None
     prevention: str | None = None
     healing: str | None = None
 
@@ -29,5 +28,11 @@ class Disease(BaseModel):
 class History(BaseModel):
     history_id: int = 0
     user_id: int = 0
-    image: str | None = None
-    disease_id: int = 0
+    article_id: int = 0
+    time:str | None = None
+
+
+class Favorite(BaseModel):
+    favorite_id: int = 0
+    user_id: int = 0
+    article_id: int = 0

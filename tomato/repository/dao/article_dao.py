@@ -10,10 +10,6 @@ class IArticleDao(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def get_by_user(self, user_id: int) -> list[Article]:
-        pass
-
-    @abc.abstractmethod
     def get_by_id(self, id: int) -> Article | None:
         pass
 
@@ -45,11 +41,8 @@ class ArticleDao(IArticleDao):
     def get_by_tittle(self, tittle: str) -> Article | None:
         return ArticleModel.get_or_none(tittle=tittle)
 
-    def get_by_user(self, user_id: int) -> list[Article]:
-        return list(ArticleModel.select().where(ArticleModel.user == user_id)) 
-
     def create(self, article: Article) -> int:
-        return ArticleModel.create(tittle=article.tittle, content=article.content, image=article.image, user=article.user, create_datetime=datetime.datetime.now()).id
+        return ArticleModel.create(tittle=article.tittle, content=article.content, image=article.image, create_datetime=datetime.datetime.now(), disease=article.disease).id
 
     def update(self, article: Article):
         car: ArticleModel = ArticleModel.get_by_id(article.id)
@@ -58,6 +51,8 @@ class ArticleDao(IArticleDao):
             article.content) != 0 else car.content
         car.image = article.image if len(article.image) != 0 else car.image
         car.updated_date = datetime.datetime.now()
+        car.disease = article.disease if len(
+            article.disease) != 0 else car.disease
         car.save()
 
     def delete(self, id: int):

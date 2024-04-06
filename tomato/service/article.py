@@ -10,8 +10,6 @@ class ArticleService():
         self.user = user_repository
 
     def create(self,article: Article) -> int:
-        if self.user.get_by_id(article.user) is None:
-            return -2
         if self.article.get_by_tittle(article.tittle) is not None:
             return -1
         return self.article.create(article)
@@ -30,9 +28,6 @@ class ArticleService():
 
     def get_all_articles(self):
         return self.article.get_articles()
-
-    def get_by_user(self, user_id: int) -> list[Article]:
-        return self.article.get_by_user(user_id)
 
     def get_by_tittle(self, tittle: str) -> Article | None:
         return self.article.get_by_tittle(tittle)

@@ -21,13 +21,11 @@ class IHistoryDao(metaclass=abc.ABCMeta):
 class HistoryDao(IHistoryDao):
 
     def get_by_user(self, user_id: int) -> list[History]:
-        return list(HistoryModel.select().where(HistoryModel.user==user_id))
+        return list(HistoryModel.select().where(HistoryModel.user == user_id))
 
     def create(self, history: History) -> int:
-        return HistoryModel.create(user=history.user,
-                            time=int(datetime.datetime.now().timestamp()),
-                            image=history.image,
-                            disease=history.disease).id
+        return HistoryModel.create(user=history.user_id,
+                                   article_id=history.article_id).id
 
     def delete(self, id: int):
         HistoryModel.delete_by_id(id)
