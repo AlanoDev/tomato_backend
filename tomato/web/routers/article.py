@@ -19,29 +19,24 @@ class Article(BaseModel):
     tittle: str
     content: str
     image: str|None
+    disease: int
 
 @router.get('/all')
 async def get_all_articles():
     return asv.get_all_articles()
-
-
-@router.get('/{user_id}')
-async def get_by_user(user_id: int):
-    return asv.get_by_user(user_id)
-
 
 @router.get('/')
 async def get_by_tittle(tittle: str):
     return asv.get_by_tittle(tittle)
 
 @router.post('/')
-async def create(article: Article,user_id:int):
-    domain=ArticleDomain(tittle=article.tittle, content=article.content, image=article.image,user=user_id)
+async def create(article: Article):
+    domain=ArticleDomain(tittle=article.tittle, content=article.content, image=article.image,disease=article.disease)
     return asv.create(domain)
 
 @router.put('/')
 async def update(article: Article):
-    domain=ArticleDomain(id=article.id, tittle=article.tittle, content=article.content, image=article.image)
+    domain=ArticleDomain(id=article.id, tittle=article.tittle, content=article.content, image=article.image,disease=article.disease)
     return asv.update(domain)
 
 @router.delete('/')

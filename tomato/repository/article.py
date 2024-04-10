@@ -8,9 +8,6 @@ class IArticleRepository(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def get_by_user(self,user_id:int) -> list[Article]:
-        pass
-    @abc.abstractmethod
     def get_by_id(self, id: int) -> Article|None:
         pass
     
@@ -51,6 +48,3 @@ class ArticleRepository(IArticleRepository):
 
     def delete(self, id: int):
         self.dao.delete(id)
-
-    def get_by_user(self,user_id:int) -> list[Article]:
-        return self.dao.get_by_user(user_id)

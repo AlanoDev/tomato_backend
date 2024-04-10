@@ -2,7 +2,7 @@
 name = "tomato"
 version = "0.1.0"
 description = ""
-authors=["John Smith","<john@example.com>"]
+authors=["John Smith"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -14,6 +14,7 @@ peewee = "^3.17.1"
 fastapi = "^0.110.0"
 uvicorn = "^0.29.0"
 python-multipart = "^0.0.9"
+requests = "^2.31.0"
 
 [tool.poetry.scripts]
 tomato = "tomato.cmdline:main"
