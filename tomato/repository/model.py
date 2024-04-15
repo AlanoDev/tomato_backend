@@ -1,42 +1,55 @@
-from peewee import *;
-from tomato.repository import BaseModel,init_database
+from peewee import *
+from tomato.repository import BaseModel, init_database
+
 
 class UserModel(BaseModel):
-    name=CharField(unique=True)
-    email=CharField()
-    password=CharField()
-    role=CharField()
+    name = CharField(unique=True)
+    email = CharField()
+    password = CharField()
+    role = CharField()
+
     class Meta:
-        table_name="user"
+        table_name = "user"
+
 
 class ArticleModel(BaseModel):
-    tittle=CharField(unique=True)
-    content=TextField()
-    image=CharField(max_length=3000)
-    disease=IntegerField()
+    title = CharField(unique=True)
+    content = TextField()
+    image = CharField(max_length=3000)
+    disease = IntegerField()
+
     class Meta:
-        table_name="article"
+        table_name = "article"
+
 
 class DiseaseModel(BaseModel):
-    tittle=CharField(unique=True)
-    description=TextField()
-    prevention=TextField()
-    healing=TextField()
+    title = CharField(unique=True)
+    description = TextField()
+    prevention = TextField()
+    healing = TextField()
+
     class Meta:
-        table_name="disease"
+        table_name = "disease"
+
 
 class HistoryModel(BaseModel):
-    user=IntegerField()
-    article_id=IntegerField()
+    user = IntegerField()
+    article_id = IntegerField()
+
     class Meta:
-        table_name="history"
+        table_name = "history"
+        primary_key = CompositeKey('user', 'article_id')
+
 
 class FavoriteModel(BaseModel):
-    user=IntegerField()
-    article_id=IntegerField()
+    user = IntegerField()
+    article_id = IntegerField()
+
     class Meta:
-        table_name="favorite" 
+        table_name = "favorite"
+        primary_key = CompositeKey('user', 'article_id')
 
 
 def database_migrate():
-    init_database().create_tables([UserModel,ArticleModel,HistoryModel,DiseaseModel,FavoriteModel])
+    init_database().create_tables(
+        [UserModel, ArticleModel, HistoryModel, DiseaseModel, FavoriteModel])

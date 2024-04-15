@@ -23,19 +23,23 @@ class IUserDao(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def update(self, user: User):
+    def update(self, user: User) -> int:
         pass
 
     @abc.abstractmethod
-    def delete(self, id: int):
+    def delete(self, id: int) -> int:
         pass
 
 
 class UserDao(IUserDao):
 
     def create(self, user: User) -> int:
-        return UserModel.create(name=user.name, email=user.email,
-                                password=user.password, role='user').id
+        try:
+            ret = UserModel.create(name=user.name, email=user.email, role="user",
+                                   password=user.password, created_date=datetime.datetime.now())
+            return ret.id
+        except:
+            return -1
 
     def get_by_name(self, name: str) -> User | None:
         user = UserModel.get_or_none(UserModel.name == name)
@@ -49,14 +53,21 @@ class UserDao(IUserDao):
         user = UserModel.get_or_none(UserModel.email == email)
         return user
 
-    def delete(self, id: int):
-        UserModel.delete_by_id(id)
+    def delete(self, id: int) -> int:
+        try:
+            UserModel.delete_by_id(id)
+            return 0
+        except:
+            return -1
 
-    def update(self, user: User):
-        cu: UserModel = UserModel.get_by_id(user.id)
-        cu.name = user.name if user.name is not None else cu.name
-        cu.email = user.email if user.email is not None else cu.email
-        cu.role = user.role if user.role is not None else cu.role
-        cu.password = user.password if user.password is not None  else cu.password
-        cu.updated_date = datetime.datetime.now()
-        cu.save()
+    def update(self, user: User) -> int:
+        cu = self.get_by_id(user.id)
+        if cu is not None:
+            cu.name = user.name if user.name is not None else cu.name
+            cu.email = user.email if user.email is not None else cu.email
+            cu.role = user.role if user.role is not None else cu.role
+            cu.password = user.password if user.password is not None else cu.password
+            cu.updated_date = datetime.datetime.now()
+            cu.save()
+            return 0
+        return -1

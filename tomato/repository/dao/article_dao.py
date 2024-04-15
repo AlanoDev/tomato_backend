@@ -14,7 +14,7 @@ class IArticleDao(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def get_by_tittle(self, tittle: str) -> Article | None:
+    def get_by_title(self, title: str) -> Article | None:
         pass
 
     @abc.abstractmethod
@@ -22,11 +22,15 @@ class IArticleDao(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def update(self, article: Article):
+    def update(self, article: Article) -> int:
         pass
 
     @abc.abstractmethod
-    def delete(self, id: int):
+    def get_by_disease(self, disease: int) -> list[Article]:
+        pass
+
+    @abc.abstractmethod
+    def delete(self, id: int) -> int:
         pass
 
 
@@ -38,22 +42,38 @@ class ArticleDao(IArticleDao):
     def get_by_id(self, id: int) -> Article | None:
         return ArticleModel.get_or_none(id=id)
 
-    def get_by_tittle(self, tittle: str) -> Article | None:
-        return ArticleModel.get_or_none(tittle=tittle)
+    def get_by_title(self, title: str) -> Article | None:
+        return ArticleModel.get_or_none(title=title)
+
+    def get_by_disease(self, disease: int) -> list[Article]:
+        return list(ArticleModel.select().where(ArticleModel.disease == disease))
 
     def create(self, article: Article) -> int:
-        return ArticleModel.create(tittle=article.tittle, content=article.content, image=article.image, create_datetime=datetime.datetime.now(), disease=article.disease).id
+        try:
+            ret = ArticleModel.create(title=article.title, content=article.content, image=article.image,
+                                      created_date=datetime.datetime.now(), disease=article.disease)
+            return ret.id
+        except Exception as e:
+            print(e)
+            return -1
 
-    def update(self, article: Article):
-        car: ArticleModel = ArticleModel.get_by_id(article.id)
-        car.tittle = article.tittle if len(article.tittle) != 0 else car.tittle
-        car.content = article.content if len(
-            article.content) != 0 else car.content
-        car.image = article.image if len(article.image) != 0 else car.image
-        car.updated_date = datetime.datetime.now()
-        car.disease = article.disease if len(
-            article.disease) != 0 else car.disease
-        car.save()
+    def update(self, article: Article) -> int:
+        car = self.get_by_id(article.id)
+        if car is not None:
+            car.title = article.title if len(
+                article.title) != 0 else car.title
+            car.content = article.content if len(
+                article.content) != 0 else car.content
+            car.image = article.image if len(article.image) != 0 else car.image
+            car.updated_date = datetime.datetime.now()
+            car.disease = article.disease
+            car.save()
+            return 0
+        return -1
 
-    def delete(self, id: int):
-        ArticleModel.delete_by_id(id)
+    def delete(self, id: int) -> int:
+        try:
+            ArticleModel.delete_by_id(id)
+            return 0
+        except:
+            return -1

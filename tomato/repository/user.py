@@ -21,11 +21,11 @@ class IUserRepository(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def delete(self, id: int):
+    def delete(self, id: int) -> int:
         pass
 
     @abc.abstractmethod
-    def update(self, user: User):
+    def update(self, user: User) -> int:
         pass
 
 
@@ -45,8 +45,8 @@ class UserRepository():
     def get_by_id(self, id: int) -> User | None:
         return self.dao.get_by_id(id)
 
-    def delete(self, id: int):
-        self.dao.delete(id)
+    def delete(self, id: int) -> int:
+        return self.dao.delete(id)
 
-    def update(self, user: User):
-        self.dao.update(user)
+    def update(self, user: User) -> int:
+        return self.dao.update(user)
