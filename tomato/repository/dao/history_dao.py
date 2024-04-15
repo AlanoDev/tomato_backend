@@ -24,12 +24,17 @@ class HistoryDao(IHistoryDao):
         return list(HistoryModel.select().where(HistoryModel.user == user_id))
 
     def create(self, history: History) -> int:
+<<<<<<< HEAD
         try:
             ret = HistoryModel.create(
                 user=history.user_id, article_id=history.article_id, created_date=datetime.datetime.now())
             return ret.id
         except:
             return -1
+=======
+        return HistoryModel.create(user=history.user_id,
+                                   article_id=history.article_id).id
+>>>>>>> 958f7de38644deb8adc406be6ace9a815a4adea7
 
     def delete(self, id: int):
         try:

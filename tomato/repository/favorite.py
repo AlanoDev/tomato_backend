@@ -3,7 +3,10 @@ import datetime
 from tomato.domain import Favorite
 from tomato.repository.dao.favorite_dao import IFavoriteDao
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 958f7de38644deb8adc406be6ace9a815a4adea7
 class IFavoriteRepository(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get_favorites(self) -> list[Favorite]:
@@ -22,10 +25,16 @@ class IFavoriteRepository(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
+<<<<<<< HEAD
     def delete(self, id: int) -> int:
         pass
 
 
+=======
+    def delete(self, id: int):
+        pass
+
+>>>>>>> 958f7de38644deb8adc406be6ace9a815a4adea7
 class FavoriteRepository():
 
     def __init__(self, dao: IFavoriteDao):
@@ -43,5 +52,10 @@ class FavoriteRepository():
     def create(self, favorite: Favorite) -> int:
         return self.dao.create(favorite)
 
+<<<<<<< HEAD
     def delete(self, id: int)->int:
         return self.dao.delete(id)
+=======
+    def delete(self, id: int):
+        self.dao.delete(id)
+>>>>>>> 958f7de38644deb8adc406be6ace9a815a4adea7

@@ -18,7 +18,6 @@ class Article(BaseModel):
     image: str | None = None
     disease: int = 0
 
-
 class Disease(BaseModel):
     id: int = 0
     title: str | None = None
