@@ -1,7 +1,7 @@
 import abc
+import datetime
 from tomato.repository.model import FavoriteModel
 from tomato.domain import Favorite
-import datetime
 
 
 class IFavoriteDao(metaclass=abc.ABCMeta):
@@ -22,7 +22,7 @@ class IFavoriteDao(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def delete(self, id: int):
+    def delete(self, id: int)->int:
         pass
 
 
@@ -38,7 +38,17 @@ class FavoriteDao(IFavoriteDao):
         return list(FavoriteModel.select().where(FavoriteModel.user == user_id))
 
     def create(self, favorite: Favorite) -> int:
-        return FavoriteModel.create(user=favorite.user_id, article_id=favorite.article_id).id
+        try:
 
-    def delete(self, id: int):
-        FavoriteModel.get_by_id(id).delete_instance()
+            ret = FavoriteModel.create(
+                user=favorite.user_id, article_id=favorite.article_id,created_date=datetime.datetime.now())
+            return ret.id
+        except:
+            return -1
+
+    def delete(self, id: int) -> int:
+        try:
+            FavoriteModel.delete_by_id(id)
+            return 0
+        except:
+            return -1

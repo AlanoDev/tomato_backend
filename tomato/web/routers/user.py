@@ -22,9 +22,9 @@ def signup(user: User):
     code=ret
     return {
         "code": code,
-        "msg": "注册成功" if code>0 else "用户名或邮箱已存在",
+        "msg": "注册成功" if code>=0 else "用户名或邮箱已存在",
         "data": {
-            "id": ret if code>0 else -1
+            "id": ret if code>=0 else -1
         }
     }
 

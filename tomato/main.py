@@ -10,7 +10,7 @@ from tomato.repository.model import database_migrate
 database_migrate()
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="files"), name="files")
+app.mount("/static", StaticFiles(directory="./tomato/files"), name="files")
 
 app.include_router(user)
 app.include_router(article)
