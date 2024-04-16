@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from tomato.domain import History
+from tomato.domain import History as HistoryDomain
 from tomato.repository.article import ArticleRepository
 from tomato.repository.dao.article_dao import ArticleDao
 from tomato.repository.dao.user_dao import UserDao
@@ -13,26 +13,26 @@ router = APIRouter(prefix='/history')
 
 hd = HistoryDao()
 hr = HistoryRepository(hd)
-ud= UserDao()
-ur= UserRepository(ud)
-ad= ArticleDao()
-ar= ArticleRepository(ad)
+ud = UserDao()
+ur = UserRepository(ud)
+ad = ArticleDao()
+ar = ArticleRepository(ad)
 hs = HistoryService(hr, ur, ar)
 
 
-
 class History(BaseModel):
+    id: int | None = None
     user_id: int
     article_id: int
 
 
-@router.get('/')
-async def get_all_history(user_id: int):
-    res = hs.get_by_user(user_id)
-    res_list: list[History] = []
+@router.get('/{id}')
+async def get_all_history(id: int):
+    res = hs.get_by_user(id)
+    res_list: list[HistoryDomain] = []
     for item in res:
         res_list.append(
-            History(id=item.id, user_id=item.user_id, article_id=item.article_id))
+            History(id=item.history_id, user_id=item.user_id, article_id=item.article_id))
     return handle_results(False, 'Success', res_list, 0)
 
 

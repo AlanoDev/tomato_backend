@@ -21,22 +21,22 @@ fs = FavoriteService(fr, ur, ar)
 
 
 class Favorite(BaseModel):
+    id: int | None=None
     user_id: int
     article_id: int
 
 
-@router.get('/')
-async def get_all_favorite(user_id: int):
-
-    res = fs.get_by_user(user_id)
+@router.get('/{id}')
+async def get_all_favorite(id: int):
+    res = fs.get_by_user(id)
     res_list: list[Favorite] = []
     for item in res:
         res_list.append(
-            Favorite(id=item.id, user_id=item.user_id, article_id=item.article_id))
+            Favorite(id=item.favorite_id, user_id=item.user_id, article_id=item.article_id))
     return handle_results(False, 'Success', res_list, 0)
 
 
-@router.delete('/')
+@router.delete('/{id}')
 async def delete_favorite(id: int):
     if fs.delete(id) == -1:
         return handle_results(True, '', None, 20+2)

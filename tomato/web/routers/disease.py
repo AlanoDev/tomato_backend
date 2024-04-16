@@ -24,7 +24,17 @@ class Disease(BaseModel):
     prevention: str
 
 
-@router.get('/')
+@router.get('/all')
+async def get_all():
+    res = ds.get_all()
+    res_list: list[Disease] = []
+    for item in res:
+        res_list.append(Disease(id=item.id, title=item.title, description=item.description,
+                        healing=item.healing, prevention=item.prevention))
+    return handle_results(False, 'Success', res_list, 0)
+
+
+@router.get('/title/{title}')
 async def get_by_title(title: str):
     res = ds.get_by_title(title)
     if res is None:
@@ -34,7 +44,7 @@ async def get_by_title(title: str):
     return handle_results(False, 'Success', ret, 0)
 
 
-@router.get('/:id')
+@router.get('/id/{id}')
 async def get_by_id(id: int):
     res = ds.get_by_id(id)
     if res is None:
@@ -42,16 +52,6 @@ async def get_by_id(id: int):
     ret = Disease(id=res.id, title=res.title, description=res.description,
                   healing=res.healing, prevention=res.prevention)
     return handle_results(False, 'Success', ret, 0)
-
-
-@router.get('/all')
-async def get_all():
-    res = ds.get_all()
-    res_list: list[Disease] = []
-    for item in res:
-        res_list.append(Disease(id=item.id, title=item.title, description=item.description,
-                        healing=item.healing, prevention=item.prevention))
-    return handle_results(False, 'Success', res_list, 0)
 
 
 @router.post('/')
@@ -81,7 +81,7 @@ async def upload(file: UploadFile):
     return handle_results(False, 'Success', {"disease": result, 'link': r'http://127.0.0.1:8000/static/'+file_name}, 0)
 
 
-@ router.put('/:id')
+@ router.put('/{id}')
 async def update(disease: Disease, id: int):
     domain = DiseaseDomain(id=id, title=disease.title, description=disease.description,
                            healing=disease.healing, prevention=disease.prevention)
@@ -90,7 +90,7 @@ async def update(disease: Disease, id: int):
     return handle_results(False, 'Success', None, 0)
 
 
-@ router.delete('/')
+@ router.delete('/{id}')
 async def delete(id: int):
     if ds.delete(id) == -1:
         return handle_results(True, '', None, 50+5)

@@ -40,7 +40,7 @@ async def get_all_articles():
     return handle_results(False, 'Success', res_list, 0)
 
 
-@router.get('/disease/:id')
+@router.get('/disease/{id}')
 async def get_by_disease_id(id: int):
     res = asv.get_by_disease(id)
     res_list: list[Article] = []
@@ -50,7 +50,7 @@ async def get_by_disease_id(id: int):
     return handle_results(False, 'Success', res_list, 0)
 
 
-@router.get('/:id')
+@router.get('/{id}')
 async def get_by_id(id: int):
     res = asv.get_by_id(id)
     if res is None:
@@ -60,7 +60,7 @@ async def get_by_id(id: int):
     return handle_results(False, 'Success', ret, 0)
 
 
-@router.get('/')
+@router.get('/{title}')
 async def get_by_title(title: str):
     res = asv.get_by_title(title)
     if res is None:
@@ -80,7 +80,7 @@ async def create(article: Article):
     return handle_results(False, 'Success', None, 0)
 
 
-@router.put('/:id')
+@router.put('/{id}')
 async def update(article: Article, id: int):
     domain = ArticleDomain(id=id, title=article.title,
                            content=article.content, image=article.image, disease=article.disease)
@@ -89,7 +89,7 @@ async def update(article: Article, id: int):
     return handle_results(False, 'Success', None, 0)
 
 
-@router.delete('/')
+@router.delete('/{id}')
 async def delete(id: int):
     if asv.delete(id) == -1:
         return handle_results(True, '', None, 10+5)
