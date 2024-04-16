@@ -33,21 +33,27 @@ class DiseaseModel(BaseModel):
 
 
 class HistoryModel(BaseModel):
+    id = AutoField()
     user = IntegerField()
     article_id = IntegerField()
 
     class Meta:
         table_name = "history"
-        primary_key = CompositeKey('user', 'article_id')
+        indexes = (
+            (('user', 'article_id'), True),
+        )
 
 
 class FavoriteModel(BaseModel):
+    id = AutoField()
     user = IntegerField()
     article_id = IntegerField()
 
     class Meta:
         table_name = "favorite"
-        primary_key = CompositeKey('user', 'article_id')
+        indexes = (
+            (('user', 'article_id'), True),
+        )
 
 
 def database_migrate():

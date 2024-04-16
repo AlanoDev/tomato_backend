@@ -22,7 +22,7 @@ class IFavoriteDao(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def delete(self, id: int)->int:
+    def delete(self, id: int) -> int:
         pass
 
 
@@ -35,13 +35,18 @@ class FavoriteDao(IFavoriteDao):
         return FavoriteModel.get_or_none(id=id)
 
     def get_by_user(self, user_id: int) -> list[Favorite]:
-        return list(FavoriteModel.select().where(FavoriteModel.user == user_id))
+        ret = []
+        for item in list(FavoriteModel.select().where(FavoriteModel.user == user_id)):
+            ret.append(Favorite(favorite_id=item.id,
+                       user_id=item.user, article_id=item.article_id))
+
+        return ret
 
     def create(self, favorite: Favorite) -> int:
         try:
 
             ret = FavoriteModel.create(
-                user=favorite.user_id, article_id=favorite.article_id,created_date=datetime.datetime.now())
+                user=favorite.user_id, article_id=favorite.article_id, created_date=datetime.datetime.now())
             return ret.id
         except:
             return -1

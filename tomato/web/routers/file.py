@@ -6,12 +6,12 @@ from tomato.web.utils.results import handle_results
 router = APIRouter(prefix='/file')
 
 
-@router.post('/')
-async def upload(file: UploadFile, user_id: int):
+@router.post('/{id}')
+async def upload(file: UploadFile, id: int):
     if file.content_type.split('/')[0] != 'image':
         return -1
     now = datetime.now().timestamp()
-    file_name = f'{user_id}'+'_' + \
+    file_name = f'{id}'+'_' + \
         f'{now}.'+file.content_type.split('/')[1]
     path = r'./files/'+file_name
     path = Path.joinpath(Path.cwd(), 'tomato', 'files', file_name)

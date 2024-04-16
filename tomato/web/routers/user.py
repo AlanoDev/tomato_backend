@@ -16,33 +16,60 @@ class User(BaseModel):
     password: str | None
 
 
+class LoginUser(BaseModel):
+    name: str | None
+    password: str | None
+
+
 @router.post("/signup")
 def signup(user: User):
-    ret=us.signup(user)
-    code=ret
+    ret = us.signup(user)
+    code = ret
     return {
         "code": code,
-        "msg": "注册成功" if code>=0 else "用户名或邮箱已存在",
+        "msg": "注册成功" if code >= 0 else "用户名或邮箱已存在",
         "data": {
-            "id": ret if code>=0 else -1
+            "id": ret if code >= 0 else -1
         }
+    }
+
+
+@router.get("/{id}")
+def get_by_id(id: int):
+    domain = us.get_by_id(id)
+    if domain is not None:
+        return {
+            "code": 0,
+            "data": {
+                "id": domain.id,
+                "name": domain.name,
+                "email": domain.email,
+                "role": domain.role
+            }
+        }
+    return {
+        "code": -1,
+        "msg": "用户不存在"
     }
 
 
 @router.post("/login")
-def login(name: str, password: str):
-    ret=us.login(name, password)
-    code=ret
+def login(user: LoginUser):
+    ret = us.login(user.name, user.password)
+    code = ret
     return {
         "code": code,
-        "msg": "登录成功" if code>0 else "用户名或密码错误",
+        "msg": "登录成功" if code > 0 else "用户名或密码错误",
         "data": {
-            "id": ret if code>0 else -1
+            "id": ret if code > 0 else -1
         }
     }
 
-roles=['admin','user','guest']
-@router.put("/role/{:id}")
+
+roles = ['admin', 'user', 'guest']
+
+
+@router.put("/role/{id}")
 def set_role(id: int, role: str):
     domain = us.get_by_id(id)
     if domain is not None:
@@ -52,11 +79,11 @@ def set_role(id: int, role: str):
             return {'code': 0, }
         else:
             return "非法角色！"
-           
-    return {'code': -1,"msg": "用户不存在"}
+
+    return {'code': -1, "msg": "用户不存在"}
 
 
-@router.put("/{:id}")
+@router.put("/{id}")
 def update(id: int, user: User):
     domain = UserDomain(name=user.name, email=user.email,
                         password=user.password, id=id)
@@ -64,14 +91,15 @@ def update(id: int, user: User):
     code = ret
     return {
         "code": code,
-        "msg": "更新成功" if code>=0 else "用户不存在",
+        "msg": "更新成功" if code >= 0 else "用户不存在",
     }
 
-@router.delete("/{:id}")
+
+@router.delete("/{id}")
 def delete(id: int):
     ret = us.delete(id)
     code = ret
     return {
         "code": code,
-        "msg": "删除成功" if code>=0 else "用户不存在",
+        "msg": "删除成功" if code >= 0 else "用户不存在",
     }

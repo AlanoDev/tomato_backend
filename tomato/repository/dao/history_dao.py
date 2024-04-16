@@ -21,20 +21,19 @@ class IHistoryDao(metaclass=abc.ABCMeta):
 class HistoryDao(IHistoryDao):
 
     def get_by_user(self, user_id: int) -> list[History]:
-        return list(HistoryModel.select().where(HistoryModel.user == user_id))
+        ret = []
+        for item in list(HistoryModel.select().where(HistoryModel.user == user_id)):
+            ret.append(History(history_id=item.id, user_id=item.user,
+                       article_id=item.article_id))
+        return ret
 
     def create(self, history: History) -> int:
-<<<<<<< HEAD
         try:
             ret = HistoryModel.create(
                 user=history.user_id, article_id=history.article_id, created_date=datetime.datetime.now())
             return ret.id
         except:
             return -1
-=======
-        return HistoryModel.create(user=history.user_id,
-                                   article_id=history.article_id).id
->>>>>>> 958f7de38644deb8adc406be6ace9a815a4adea7
 
     def delete(self, id: int):
         try:

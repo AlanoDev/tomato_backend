@@ -18,8 +18,6 @@ class HistoryService():
         return self.repository.create(history)
 
     def delete(self, id: int) -> int:
-        if self.get_by_id(id) is None:
-            return -1
         return self.repository.delete(id)
 
     def get_by_user(self, user_id: int) -> list[History]:
