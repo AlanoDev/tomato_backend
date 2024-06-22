@@ -34,7 +34,11 @@ class IArticleDao(metaclass=abc.ABCMeta):
         pass
 
 
+<<<<<<< HEAD
 class ArticleDao(IArticleDao):# dao对peewee基本api
+=======
+class ArticleDao(IArticleDao):
+>>>>>>> ee9cc31d28c5469032ff14a8c4febdb0fee2dbb4
 
     def get_articles(self) -> list[Article]:
         return list(ArticleModel.select())

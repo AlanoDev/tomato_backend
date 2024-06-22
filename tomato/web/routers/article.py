@@ -30,7 +30,6 @@ class Article(BaseModel):
     disease: int
 
 
-
 @router.get('/all')
 async def get_all_articles():
     res = asv.get_all_articles()
