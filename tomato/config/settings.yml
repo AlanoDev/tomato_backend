@@ -1,0 +1,7 @@
+LOG_LEVEL: INFO
+DATABASE:
+  PORT: 13306
+  NAME: tomato
+  USERNAME: root
+  PASSWORD: root
+  HOST: localhost
